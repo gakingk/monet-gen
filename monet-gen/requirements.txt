@@ -1,5 +1,9 @@
-python>=3.9
-torch>=2.0
-transformers
+torch
 diffusers
+transformers
 accelerate
+peft
+scipy
+pillow
+tqdm
+datasets
