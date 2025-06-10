@@ -1,0 +1,85 @@
+\section{Materiais e Método}
+
+Esta seção apresenta duas abordagens distintas para o controle de estilo na geração de imagens com modelos de difusão: a engenharia de \textit{prompts} e o \textit{fine-tuning} com Low-Rank Adaptation (LoRA)\cite{lora}, ambas aplicadas ao estilo impressionista do pintor Claude Monet. O modelo base utilizado foi o Stable Diffusion v1.4\cite{stablediff}, amplamente adotado em tarefas de geração de imagens condicionadas por texto. A metodologia está dividida em: preparação dos dados, adaptação do modelo e avaliação por geração.
+
+\subsection{Materiais Utilizados}
+
+Esta subseção descreve os recursos computacionais, \textit{frameworks}, ferramentas e bases de dados utilizados no desenvolvimento do projeto.
+
+\begin{itemize}
+\item O pré-processamento e a etapa de engenharia de \textit{prompts} foram realizados em um computador pessoal.
+\item A base de imagens foi construída a partir da galeria online Claude Monet Gallery~\cite{cmgallery}, com apoio de scripts em Python para baixar e organizar.
+\item O \textit{fine-tuning} com LoRA foi executado em uma GPU RTX 4090 24GB disponível no servidor do laboratório LIDIA\footnote{LIDIA - Laboratório de Inovação e Desenvolvimento em Inteligência Artificial do IBILCE/UNESP}.
+\end{itemize}
+
+\begin{table}[htb]
+\caption{Especificações das máquinas utilizadas}
+\label{tab:maquinas}
+
+        \begin{tabular}{lll}
+        \hline
+        Ambiente            & Processador                        & GPU                                    \\ \hline
+        Computador pessoal  & Intel i5-9300H (8) @ 4.10GHz       & NVIDIA GeForce GTX 1650\footnote{Mais especificamente o modelo NVIDIA GeForce GTX 1650 Mobile / Max-Q} \\ \hline
+        Servidor LIDIA      & Intel i9-13900K (32) @ 5.80GHz     & NVIDIA RTX 4090 24GB                   \\ \hline
+        \end{tabular}
+
+\fonte{Autoria própria}
+\end{table}
+
+\subsection{\textit{Frameworks} e Ferramentas}
+
+A linguagem utilizada foi Python 3.10. As principais bibliotecas e \textit{frameworks} empregados foram:
+
+\begin{itemize}
+\item \textbf{PyTorch} \cite{pytorch}: para construção e treinamento dos modelos.
+\item \textbf{Diffusers} \cite{diffusers}: para fine-tuning LoRA sobre o Stable Diffusion.
+\item \textbf{Datasets} \cite{datasets}: para manipulação e particionamento da base de dados.
+\item \textbf{Accelerate} \cite{accelerate}: para facilitar o gerenciamento de dispositivos e paralelismo.
+\item \textbf{BeautifulSoup} \cite{beautifulsoup}: para extração automatizada de dados (web scraping) das páginas com obras de Monet.
+\item \textbf{CLIPScore} e \textbf{FID}: como métricas automáticas de avaliação.
+\end{itemize}
+
+\subsection{Base de Dados}
+
+A base de dados foi composta por 1.956 imagens de pinturas de Claude Monet, extraídas da Claude Monet Gallery~\cite{cmgallery}. Cada imagem foi redimensionada para 512$\times$512 pixels, com padding preto nas bordas para preservar a proporção original.
+
+As legendas (captions) foram geradas automaticamente utilizando o modelo BLIP (\textit{Bootstrapping Language-Image Pretraining}) da HuggingFace: \texttt{Salesforce/blip-image-captioning-base}. Após a geração, as legendas passaram por uma etapa de filtragem para remoção de expressões comuns como ``\textit{a painting of}'', ``\textit{an artwork of}'' e menções diretas ao autor. O objetivo foi permitir que o modelo aprendesse o estilo de Monet a partir das características visuais, sem depender de pistas explícitas no \textit{prompt}.
+
+\subsection{Engenharia de \textit{Prompts}}
+
+Na primeira abordagem, utilizou-se o modelo base Stable Diffusion sem modificações. Foram criados \textit{prompts} textuais que evocam o estilo impressionista de Monet, com expressões como: ``\textit{soft brushstrokes}'', ``\textit{light reflections on water}'', ``\textit{pastel tones}'', ``\textit{impressionist style}'', ``\textit{in the style of Claude Monet}'', entre outros. As imagens geradas foram utilizadas para análise qualitativa e quantitativa comparativa.
+
+\subsection{\textit{Fine-tuning} com LoRA}
+
+Na segunda abordagem, o modelo foi adaptado utilizando Low-Rank Adaptation (LoRA)~\cite{lora}. O \textit{fine-tuning} foi aplicado apenas sobre o módulo UNet da arquitetura Stable Diffusion, mantendo congelado o codificador textual (CLIP). Os pares imagem–legenda (caption) foram utilizados como supervisão textual. O treinamento foi realizado por 10 épocas, com \textit{batch size} de 1 e \textit{learning rate} de 1e-4, com duração total aproximada de 1,5 hora no servidor LIDIA.
+
+\subsection{Método}
+
+A Figura~\ref{fig:fluxograma} apresenta o fluxograma geral do método. Inicialmente, realiza-se a coleta e o pré-processamento dos dados. Em seguida, o modelo é refinado com LoRA. Imagens são geradas tanto com o modelo adaptado quanto com o modelo base. Por fim, as imagens são avaliadas a partir de \textit{prompts} padronizados.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+node distance=1.8cm and 3.5cm,
+box/.style = {draw, rounded corners, text width=6cm, align=center, minimum height=1.4cm},
+arrow/.style = {->, thick}
+]
+
+% Etapas principais
+\node[box] (data) {Coleta e pré-processamento de dados (pinturas de Monet)};
+\node[box, right=of data] (\prompts) {Engenharia de \textit{Prompts} com o modelo base};
+\node[box, below=of data] (lora) {\textit{Fine-tuning} do modelo base com LoRA};
+\node[box, below right=of data] (generation) {Geração de imagens com os modelos a partir de \textit{prompts} padronizados};
+\node[box, below=of generation] (eval) {Avaliação com métricas \ (CLIPScore, FID)};
+
+% Conexões
+\draw[arrow] (prompts) -- (generation);
+\draw[arrow] (data) -- (lora);
+\draw[arrow] (lora) -- (generation);
+\draw[arrow] (generation) -- (eval);
+
+\end{tikzpicture}
+\caption{Fluxograma da metodologia. A engenharia de \textit{prompts} ocorre independentemente dos dados; já o \textit{fine-tuning} utiliza para treinamento as imagens coletadas.}
+\label{fig:fluxograma}
+\fonte{Autoria própria}
+\end{figure}

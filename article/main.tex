@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}  
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+
+%\newcommand{\arnaldo}[1]{\todo[color=red!30,inline]{{\textbf Arnaldo:} {#1}}}
+%\newcommand{\gabriel}[1]{\todo[color=green!30,inline]{{\textbf Gabriel:} {#1}}}
+
+% para ocultar os todo's, comentar as linhas acima e descomentar abaixo
+\newcommand{\arnaldo}[1]{ }
+\newcommand{\gabriel}[1]{ }
+\renewcommand{\fonte}[1]{%
+    \begin{SingleSpacing}\par\end{SingleSpacing}
+    \centering\small{Fonte: #1}
+}
+     
+\sloppy
+
+\title{Controle de Estilo Artístico em Modelos Generativos: Uma Análise Comparativa entre Engenharia de Prompt e LoRA}
+
+\author{Gabriel Inagaki Marcelino}
+
+
+\address{Departamento de Ciências da Computação e Estatística -- Universidade Estadual Paulista
+  (UNESP)\\
+  Caixa Postal 15054-000 -- São José do Rio Preto -- SP -- Brazil%ver isso aqui depois
+%\nextinstitute
+  %Department of Computer Science -- University of Durham\\
+  %Durham, U.K.
+%\nextinstitute
+ % Departamento de Sistemas e Computação\\
+  %Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  %\email{\{nedel,flavio\}@inf.ufrgs.br, R.Bordini@durham.ac.uk,
+  %jomi@inf.furb.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{abstract}
+    Image generation using artificial intelligence models has gained prominence due to its potential to produce visually rich content from textual descriptions. In this work, we compare two distinct approaches for artistic style control: prompt engineering and fine-tuning with Low-Rank Adaptation (LoRA), both applied to the generation of images in the impressionist style of Claude Monet using the Stable Diffusion model. A dataset of Monet’s real paintings was collected through web scraping using the \textit{BeautifulSoup} library. Through a controlled experiment, we evaluate style fidelity, consistency across generations, and the visual quality of the resulting images using automatic metrics such as CLIPScore and FID, alongside qualitative analysis. Results indicate that fine-tuning with LoRA achieves higher style fidelity and consistency, while prompt engineering offers a faster, less resource-intensive alternative with satisfactory outcomes for exploratory use cases.
+\end{abstract}
+     
+\begin{resumo} 
+    A geração de imagens com modelos de inteligência artificial tem se destacado pelo potencial de produzir conteúdos visualmente ricos a partir de descrições textuais. Neste trabalho, comparamos duas abordagens distintas para o controle de estilo artístico: a engenharia de \textit{prompts} (\textit{prompt engineering}) e o \textit{fine-tuning} com \textit{Low-Rank Adaptation} (LoRA), ambas aplicadas à geração de imagens no estilo impressionista de Claude Monet utilizando o modelo \textit{Stable Diffusion}. A base de dados com pinturas reais de Monet foi coletada via \textit{web scraping}, utilizando a biblioteca \textit{BeautifulSoup}. Por meio de um experimento controlado, avaliamos a fidelidade ao estilo, a consistência entre gerações e a qualidade visual das imagens resultantes, utilizando métricas automáticas (CLIPScore e FID) e análise qualitativa. Os resultados indicam que o \textit{fine-tuning} com LoRA proporciona maior fidelidade e consistência estilística, embora a engenharia de \textit{prompts} apresente uma solução mais rápida e menos custosa computacionalmente, com resultados ainda satisfatórios para aplicações exploratórias.
+\end{resumo}
+
+\include{conteudo/1introducao}
+\include{conteudo/2metodologia}
+\include{conteudo/3experimentos}
+\include{conteudo/4conclusao}
+\include{conteudo/5referencias}
+
+
+\end{document}
+

@@ -1,0 +1,7 @@
+\section{Introdução}
+
+A geração de imagens por meio de modelos de inteligência artificial teve grandes avanços nos últimos anos, especialmente com o advento de modelos de difusão como o Stable Diffusion \cite{stablediff}, permitindo transformar descrições textuais em imagens visualmente coerentes. Controlar o estilo visual das imagens geradas pelos modelos prova-se um desafio dada a natureza de ``caixa preta'' de tais tecnologias.
+
+Duas abordagens se destacam para essa tarefa: a engenharia de \textit{prompts}, que explora descrições textuais detalhadas para guiar o modelo, e o \textit{fine-tuning}, que adapta os pesos do modelo para especializá-lo em um domínio visual específico. A técnica de \textit{Low-Rank Adaptation} (LoRA) tem se consolidado como uma alternativa eficiente para esse \textit{fine-tuning}, exigindo menos recursos computacionais e dados de treinamento \cite{lora}.
+
+Este trabalho investiga e compara essas duas abordagens no contexto da geração de imagens no estilo impressionista de Claude Monet. Utilizaremos o modelo Stable Diffusion como base para ambos os métodos e propomos um experimento com \textit{prompts} padronizados, uma base de dados real das obras de Monet, e métricas de avaliação objetivas (CLIPScore \cite{clipscore}, FID \cite{fid}) e subjetivas (análise visual qualitativa). O objetivo é analisar em que medida a engenharia de \textit{prompts} pode se aproximar do resultado obtido com o \textit{fine-tuning} especializado, considerando fidelidade ao estilo, consistência e esforço computacional.

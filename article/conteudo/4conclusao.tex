@@ -1,0 +1,8 @@
+\section{Conclusão}
+
+Neste trabalho, foram comparadas duas abordagens para controle de estilo em geração de imagens: engenharia de \textit{prompts} aplicada a um modelo generalista e \textit{fine-tuning} com LoRA para especialização do modelo no estilo impressionista de Claude Monet. Os experimentos realizados demonstraram que a técnica de \textit{fine-tuning} com LoRA consegue internalizar o estilo desejado, permitindo a geração de imagens coerentes com \textit{prompts} genéricos, sem necessidade de menções explícitas ao estilo. Por outro lado, a engenharia de \textit{prompts} apresentou melhor desempenho quando o estilo era especificado diretamente na descrição.
+
+As avaliações quantitativas e qualitativas indicam que o \textit{fine-tuning} com LoRA altera significativamente o espaço visual do modelo, ainda que apresente limitações em generalizar para elementos pouco representados nas pinturas. A engenharia de \textit{prompts}, apesar da sua maior flexibilidade, é menos consistente em expressar o estilo de forma automática, exigindo descrição detalhada das características desejadas.
+
+Assim, é possível que a combinação dessas abordagens seja promissora: o \textit{fine-tuning} com LoRA para a internalização do estilo, aliado à engenharia de \textit{prompts} para ajustes finos e maior controle. Futuras pesquisas podem explorar a integração destas técnicas, criando modelos mais eficientes em representação de estilo.
+
